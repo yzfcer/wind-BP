@@ -14,4 +14,6 @@ void bp_translate_learn_layer(float *wight,float *value_front,
 int bp_translate_learn_example(bp_param_s *bp,bp_example_s *example);
 void bp_param_print(bp_param_s *bp);
 int bp_learn(bp_param_s *bp,bp_example_s *example,int count);
+void bp_calc_example(bp_param_s *bp,bp_example_s *example);
+
 #endif

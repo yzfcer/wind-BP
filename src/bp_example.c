@@ -94,7 +94,7 @@ static int check_example(char * examstr)
     return 0;
 }
 
-static bp_example_s *new_example(exaple_info_s *info)
+bp_example_s *new_example(exaple_info_s *info)
 {
     bp_example_s *exam = (bp_example_s *)malloc(sizeof(bp_example_s));
     exam->in_data = (float*)malloc(sizeof(float)*info->in_cnt);
@@ -124,7 +124,7 @@ static int decode_data(char * examstr,float *data,int idx1,int idx2)
     return 0;
 }
 
-static int init_example(bp_example_s *exam,char * examstr)
+int init_example(bp_example_s *exam,char * examstr)
 {
     int i = 0;
     int idx1 = get_char_index(examstr,0,'[')+1;
@@ -207,13 +207,35 @@ void bp_example_destroy(bp_example_s *exams)
         exam = ex;
     }
 }
-void bp_example_print(void)
+void bp_example_print_one(bp_example_s *exam)
 {
     int i,idx;
-    bp_example_s *exam;
     char *examstr = malloc(256);
     exaple_info_s *info = bp_example_info();
+    idx = 0;
+    memset(examstr,0,256);
+    idx += sprintf(&examstr[idx],"[");
+    for(i = 0;i < info->in_cnt;i ++)
+    {
+        idx += sprintf(&examstr[idx],"%.0f,",exam->in_data[i]);
+    }
+    idx --;
+    idx += sprintf(&examstr[idx],"]->[");
+    for(i = 0;i < info->out_cnt;i ++)
+    {
+        idx += sprintf(&examstr[idx],"%.0f,",exam->out_data[i]);
+    }
+    idx --;
+    idx += sprintf(&examstr[idx],"]\r\n");
+    bp_printf("%s",examstr);
+    free(examstr);
     
+}
+
+void bp_example_print(void)
+{
+    bp_example_s *exam;
+    exaple_info_s *info = bp_example_info();
     if(info->exa_cnt <= 0)
     {
         bp_printf("ERROR:has no examples\r\n");
@@ -222,22 +244,7 @@ void bp_example_print(void)
     exam = info->exam;
     while(exam)
     {
-        idx = 0;
-        memset(examstr,0,256);
-        idx += sprintf(&examstr[idx],"[");
-        for(i = 0;i < info->in_cnt;i ++)
-        {
-            idx += sprintf(&examstr[idx],"%.0f,",exam->in_data[i]);
-        }
-        idx --;
-        idx += sprintf(&examstr[idx],"]->[");
-        for(i = 0;i < info->out_cnt;i ++)
-        {
-            idx += sprintf(&examstr[idx],"%.0f,",exam->out_data[i]);
-        }
-        idx --;
-        idx += sprintf(&examstr[idx],"]\r\n");
-        bp_printf("%s",examstr);
+        bp_example_print_one(exam);
         exam = exam->next;
     }
 }
