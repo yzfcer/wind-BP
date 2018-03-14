@@ -67,10 +67,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\bp.c" />
     <ClCompile Include="..\..\..\src\bp_example.c" />
     <ClCompile Include="..\..\..\src\bp_frame.c" />
     <ClCompile Include="..\..\..\src\bp_func.c" />
-    <ClCompile Include="bp.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\bp_example.h" />
