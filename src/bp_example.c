@@ -57,7 +57,6 @@ static int get_output_count(char * examstr)
     idx2 = get_char_index(examstr,idx1+1,']');
     if(idx1 < 0 || idx2 < 0)
         return -1;
-    //while(i = get_char_index(&examstr[idx1+1],',') < idx1) 
     i = get_char_index(examstr,idx1+1,',');
     while(i < idx2)
     {
@@ -112,9 +111,7 @@ static int decode_data(char * examstr,float *data,int idx1,int idx2)
     str = (char*)malloc(sizeof(char)*(idx2-idx1+2));
     memcpy(str,&examstr[idx1],idx2-idx1+1);
     str[idx2-idx1+1] = 0;
-    //data[idx1] = 0;
     temp = strtok(str,",");
-    //data[i++] = (float)atof(temp);
     while(temp)
     {
         data[i++] = atof(temp);

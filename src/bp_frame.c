@@ -169,8 +169,6 @@ int bp_translate_learn_example(bp_param_s *bp,bp_example_s *example)
     
     for(i = 0;i < bp->node_cnt[0];i ++)
         bp->lay_value[0][i] = example->in_data[i];
-    //print_float_arr("in",bp->lay_value[0],bp->node_cnt[0]);
-
     for(i = 0;i < bp->lay_cnt-1;i ++)
     {
         bp_translate_learn_layer(bp->lay_wight[i],bp->lay_value[i],
@@ -179,7 +177,6 @@ int bp_translate_learn_example(bp_param_s *bp,bp_example_s *example)
             
     }
     bp_calc_out_error(bp,example);
-    //print_float_arr("errlist",example->errlist,bp->node_cnt[bp->lay_cnt-1]);
     if(example->error < bp->err_limit)
         return 0;
     
@@ -188,8 +185,6 @@ int bp_translate_learn_example(bp_param_s *bp,bp_example_s *example)
         bp_modify_wight(bp->errlist[i-1],bp->errlist[i],
             bp->node_cnt[i-1],bp->node_cnt[i],bp->learn_factor,
             bp->lay_wight[i-1],bp->lay_value[i-1],0);
-        //print_float_arr("lay error",bp->errlist[i-1],bp->node_cnt[i-1]);
-        
     }
     return -1;
 }
@@ -223,7 +218,6 @@ int bp_learn_flow(bp_param_s *bp,bp_example_s *example,int count)
         
     return -1;
 }
-#include <windows.h>
 
 int bp_learn(bp_param_s *bp,bp_example_s *example,int count)
 {
@@ -263,8 +257,6 @@ int bp_learn(bp_param_s *bp,bp_example_s *example,int count)
 			return 0;
 		}
 
-        //bp_param_print(bp);
-        //Sleep(1000);
     }
     return 0;
 }
