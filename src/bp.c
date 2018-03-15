@@ -51,7 +51,7 @@ int main(int argc,char **argv)
     init_example(exam,"[7.4,6.7]->[0,0]");
     bp_calc_example(bp,exam);
     exam = new_example(info);
-    init_example(exam,"[7.1,5.7]->[0,0]");
+    init_example(exam,"[2.1,4.7]->[0,0]");
     bp_calc_example(bp,exam);
     exam = new_example(info);
     init_example(exam,"[1.3,4]->[1,0]");

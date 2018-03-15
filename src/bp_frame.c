@@ -246,16 +246,17 @@ int bp_learn(bp_param_s *bp,bp_example_s *example,int count)
 			stop_cnt = 0;
 			err = bp->tot_err;
 		}
-			
-#if 0
-		if((stop_cnt > 2000)&&(bp->learn_factor > 0.000002))
+
+        //自适应调节学习因子
+		if((stop_cnt > 10)&&(bp->learn_factor > 0.000002))
 		{
 			bp->learn_factor /= 2;
 			stop_cnt = 0;
+            bp_printf("calc_cnt:%d,average error:%f\r\n\r\n\r\n",calc_cnt,bp->avr_err);
 			bp_printf("modify learn_factor:%f\r\n",bp->learn_factor);
 		}
-#endif
-		if(stop_cnt > 10000)
+        //自适应结束学习状态
+		if(stop_cnt > 20)
 		{
 			bp_printf("error is stable,avrerage error:%f\r\n",bp->avr_err);
 			bp_printf("calc_cnt:%d,average error:%f\r\n\r\n\r\n",calc_cnt,bp->avr_err);
