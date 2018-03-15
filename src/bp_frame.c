@@ -44,8 +44,6 @@ int bp_create(bp_param_s *bp,int lay_cnt,int *node_cnt)
         cnt = node_cnt[i]*node_cnt[i+1];
         bp->lay_wight[i] = (float*)malloc(cnt*sizeof(float));
         get_rand(bp->lay_wight[i],cnt);
-        //for(j = 0;j < cnt;j ++)
-        //    bp->lay_wight[i][j] = (float)get_rand();
     }
     bp->lay_cnt = lay_cnt;
     
@@ -249,11 +247,10 @@ int bp_learn(bp_param_s *bp,bp_example_s *example,int count)
 			err = bp->tot_err;
 		}
 			
-#if 1
-		//err = bp->tot_err;
+#if 0
 		if((stop_cnt > 2000)&&(bp->learn_factor > 0.000002))
 		{
-			bp->learn_factor *= 0.8;
+			bp->learn_factor /= 2;
 			stop_cnt = 0;
 			bp_printf("modify learn_factor:%f\r\n",bp->learn_factor);
 		}

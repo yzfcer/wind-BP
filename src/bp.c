@@ -10,8 +10,7 @@ int main(int argc,char **argv)
     bp_param_s *bp;
     exaple_info_s *info;
     bp_example_s *exam;
-    int node_cnt[4] = {2,1,1,2};
-	float tt = (float)atof("gdgdggd");
+    int node_cnt[4] = {2,4,4,2};
     if(argc > 1)
     {
         bp_printf("%s\r\n",argv[1]);
@@ -26,12 +25,12 @@ int main(int argc,char **argv)
     bp_example_create("[8,6]->[0,1]");
 #endif
 #if 1
-    bp_example_create("[2,3]->[0,1]");
-    bp_example_create("[1.3,4]->[0,1]");
-    bp_example_create("[1.8,3.2]->[0,1]");
-    bp_example_create("[1,4.3]->[0,1]");
-    bp_example_create("[2,2]->[0,1]");
-    bp_example_create("[3,4]->[0,1]");
+    bp_example_create("[2,3]->[1,0]");
+    bp_example_create("[1.3,4]->[1,0]");
+    bp_example_create("[1.8,3.2]->[1,0]");
+    bp_example_create("[1,4.3]->[1,0]");
+    bp_example_create("[2,2]->[1,0]");
+    bp_example_create("[3,4]->[1,0]");
 #endif
 
 
@@ -46,7 +45,7 @@ int main(int argc,char **argv)
     bp_param_print(bp);
     
     exam = new_example(info);
-    init_example(exam,"[2.4,3.7]->[0,0]");
+    init_example(exam,"[8,6]->[0,1]");
     bp_calc_example(bp,exam);
     exam = new_example(info);
     init_example(exam,"[7.4,6.7]->[0,0]");
@@ -55,7 +54,7 @@ int main(int argc,char **argv)
     init_example(exam,"[7.1,5.7]->[0,0]");
     bp_calc_example(bp,exam);
     exam = new_example(info);
-    init_example(exam,"[2.4,1.7]->[0,0]");
+    init_example(exam,"[1.3,4]->[1,0]");
     bp_calc_example(bp,exam);
 	system("pause");
 }
