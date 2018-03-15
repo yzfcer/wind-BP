@@ -15,7 +15,7 @@ static void print_float_arr(char *title,float *data,int cnt)
     bp_printf("%s:",title);
     for(i = 0;i < cnt;i ++)
         bp_printf("%f ",data[i]);
-    bp_printf("\r\n ");
+    bp_printf("\r\n");
 }
 
 //为节点数据和节点权重矩阵分配空间,初始化权重矩阵
@@ -161,8 +161,6 @@ void bp_calc_example(bp_param_s *bp,bp_example_s *example)
                                 bp->node_cnt[i+1],0);
             
     }
-    
-    bp_printf("result:");
     print_float_arr("result",bp->lay_value[bp->lay_cnt-1],bp->node_cnt[bp->lay_cnt-1]);
 }
 //一个实例的完整学习流程
@@ -213,6 +211,7 @@ int bp_learn_flow(bp_param_s *bp,bp_example_s *example,int count)
         bp->tot_err += exa->error;
         exa = exa->next;
     }
+	bp->avr_err = bp->tot_err / count;
     if(cnt >= count)
     {
         exa = example;
@@ -232,17 +231,40 @@ int bp_learn(bp_param_s *bp,bp_example_s *example,int count)
 {
     int ret = -1,I;
     int calc_cnt = 0;
+	float err = 100000;
+	int stop_cnt = 0;
     while(ret != 0)
     {
         calc_cnt ++;
         ret = bp_learn_flow(bp,example,count);
-        if(!(calc_cnt&0xffff))
+        if(!(calc_cnt&0xffff) || (ret == 0))
         {
-            bp_printf("calc_cnt:%d,error:%f\r\n",calc_cnt,bp->tot_err);
-            //for(i = 0;i < )
-        
+            bp_printf("calc_cnt:%d,average error:%f\r\n",calc_cnt,bp->avr_err);
         }
-        
+        if(bp->tot_err >= err)
+			stop_cnt ++;
+		else
+		{
+			stop_cnt = 0;
+			err = bp->tot_err;
+		}
+			
+#if 1
+		//err = bp->tot_err;
+		if((stop_cnt > 2000)&&(bp->learn_factor > 0.000002))
+		{
+			bp->learn_factor *= 0.8;
+			stop_cnt = 0;
+			bp_printf("modify learn_factor:%f\r\n",bp->learn_factor);
+		}
+#endif
+		if(stop_cnt > 10000)
+		{
+			bp_printf("error is stable,avrerage error:%f\r\n",bp->avr_err);
+			bp_printf("calc_cnt:%d,average error:%f\r\n\r\n\r\n",calc_cnt,bp->avr_err);
+			return 0;
+		}
+
         //bp_param_print(bp);
         //Sleep(1000);
     }

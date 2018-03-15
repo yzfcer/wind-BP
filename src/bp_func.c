@@ -11,10 +11,10 @@ int get_rand(float *value,int cnt)
     srand((unsigned) time(NULL));
     for(i = 0;i < cnt;i ++)
     {
-    	value[i] = rand() % 200 - 100;
+    	value[i] = rand() % 100;
         //printf("%0.f ",value[i]);
-        value[i] = (value[i]+0.1) / 200;
-		value[i] += 0.5;
+        value[i] = (value[i]+0.1) / 100;
+		//value[i] += 0.5;
         //printf("%f ",value[i]);
     
     }

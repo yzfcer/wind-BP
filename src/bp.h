@@ -16,6 +16,7 @@ struct __bp_param_s
     float **lay_wight;//
     float **errlist;//输出误差向量
     float tot_err;//所有学习实例总误差
+    float avr_err;//所有学习实例平均误差
 };
 
 //学习实例
