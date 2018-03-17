@@ -1,8 +1,10 @@
 #include "bp_frame.h"
+#include "bp_example.h"
 #include "math.h"
 #include <malloc.h>
 #include <string.h>
 #include "bp_func.h"
+#include "bp_port.h"
 typedef float (*FUNC_EXT)(float t);
 float ext_func1(float t){return 1/(1+exp(-t));}
 float ext_func2(float t){return (exp(t)-exp(-t))/(exp(t)+exp(-t));}
@@ -21,7 +23,7 @@ static void print_float_arr(char *title,float *data,int cnt)
 //为节点数据和节点权重矩阵分配空间,初始化权重矩阵
 int bp_create(bp_param_s *bp,int lay_cnt,int *node_cnt)
 {
-    int i,j;
+    int i;
     int cnt;
     bp->node_cnt = (int*)malloc(lay_cnt*sizeof(int));
     memset(bp->node_cnt,0,lay_cnt*sizeof(int));
@@ -138,7 +140,7 @@ void bp_modify_wight(float *errlist1,float *errlist2,int lay1_cnt,int lay2_cnt,
             case 0:f1=*(lay1_value+i)*(1-*(lay1_value+i));break;
             case 1:f1=1-(*(lay1_value+i))*(*(lay1_value+i));break;
             case 2:f1=1/(1+(*(lay1_value+i))*(*(lay1_value+i)));break;
-            default:printf("* parameter error:tranerr.\n");
+            default:bp_printf("* parameter error:tranerr.\n");
                     break;
         }
         errlist1[i]=f1 * t;
@@ -221,7 +223,7 @@ int bp_learn_flow(bp_param_s *bp,bp_example_s *example,int count)
 
 int bp_learn(bp_param_s *bp,bp_example_s *example,int count)
 {
-    int ret = -1,I;
+    int ret = -1;
     int calc_cnt = 0;
 	float err = 100000;
 	int stop_cnt = 0;

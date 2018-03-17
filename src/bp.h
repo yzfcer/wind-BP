@@ -1,7 +1,6 @@
 #ifndef BP_H__
 #define BP_H__
 #include <stdio.h>
-#define bp_printf printf
 
 typedef struct __bp_example_s bp_example_s;
 typedef struct __bp_param_s bp_param_s;

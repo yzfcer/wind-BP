@@ -3,19 +3,17 @@
 #include<stdlib.h>
 #include "bp_frame.h"
 #include "bp_example.h"
+#include "bp_file.h"
 
 int main(int argc,char **argv)
 {
-    int i;
     bp_param_s *bp;
     exaple_info_s *info;
     bp_example_s *exam;
     int node_cnt[4] = {2,4,4,2};
-    if(argc > 1)
-    {
-        bp_printf("%s\r\n",argv[1]);
-    }
-
+	bp = (bp_param_s*)malloc(sizeof(bp_param_s));
+    //if(argc > 1)
+    //    bp_param_read(bp,argv[1]);
 #if 1
 	bp_example_create("[7,7]->[0,1]");
     bp_example_create("[5,8]->[0,1]");
@@ -35,7 +33,7 @@ int main(int argc,char **argv)
 
 
     bp_example_print();
-    bp = (bp_param_s*)malloc(sizeof(bp_param_s));
+    
     bp_create(bp,4,node_cnt);
     bp_set_err_limit(bp,0.000002f);
     bp_set_learn_factor(bp,0.001f);

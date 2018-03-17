@@ -1,6 +1,8 @@
 #include "bp_example.h"
 #include <stdlib.h>
 #include <string.h>
+#include "bp_port.h"
+
 exaple_info_s exam_info;
 
 void bp_example_init(void)
@@ -32,6 +34,7 @@ static int get_char_index(char * str,int idx,char c)
         if(str[i] == c)
             return i;
     }
+    return -1;
 }
 
 static int get_input_count(char * examstr)
@@ -45,6 +48,8 @@ static int get_input_count(char * examstr)
     {
         cnt ++;
         i = get_char_index(examstr,i+1,',');
+        if(i < 0)
+            break;
     }
     return cnt;
 }
@@ -62,6 +67,8 @@ static int get_output_count(char * examstr)
     {
         cnt ++;
         i = get_char_index(examstr,i+1,',');
+        if(i < 0)
+            break;
     }
     return cnt;
 }
@@ -207,7 +214,7 @@ void bp_example_destroy(bp_example_s *exams)
 void bp_example_print_one(bp_example_s *exam)
 {
     int i,idx;
-    char *examstr = malloc(256);
+    char *examstr = (char *)malloc(256);
     exaple_info_s *info = bp_example_info();
     idx = 0;
     memset(examstr,0,256);

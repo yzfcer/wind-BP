@@ -41,7 +41,7 @@
     <IncludePath>$(ProjectDir)../../../src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)../../../src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)../../../src;$(ProjectDir)../../../port;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -67,13 +67,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\port\bp_port.c" />
     <ClCompile Include="..\..\..\src\bp.c" />
     <ClCompile Include="..\..\..\src\bp_example.c" />
+    <ClCompile Include="..\..\..\src\bp_file.c" />
     <ClCompile Include="..\..\..\src\bp_frame.c" />
     <ClCompile Include="..\..\..\src\bp_func.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\port\bp_port.h" />
     <ClInclude Include="..\..\..\src\bp_example.h" />
+    <ClInclude Include="..\..\..\src\bp_file.h" />
     <ClInclude Include="..\..\..\src\bp_frame.h" />
     <ClInclude Include="..\..\..\src\bp_func.h" />
   </ItemGroup>
