@@ -26,7 +26,7 @@ int bp_learn_module(char *module)
     bp_param_write(bp,module);
 }
 
-int bp_calc_module(char *module)
+int bp_calc_module(char *module,char *examstr)
 {
     bp_param_s *bp;
     bp_example_s *exam;
@@ -36,16 +36,24 @@ int bp_calc_module(char *module)
     info = bp_example_info();
     info->in_cnt = bp->input_cnt;
     info->out_cnt = bp->output_cnt;
-    exam = new_example(bp->input_cnt,bp->output_cnt);
-    init_example(exam,"[8,6]->[0,1]");
-    bp_calc_example(bp,exam);
-
+    if(examstr != NULL)
+    {
+        exam = new_example(bp->input_cnt,bp->output_cnt);
+        init_example(exam,examstr);
+        bp_calc_example(bp,exam);
+    }
+    else
+    {
+        exam = new_example(bp->input_cnt,bp->output_cnt);
+        init_example(exam,"[8,6]->[0,1]");
+        bp_calc_example(bp,exam);
+    }
 }
 
 int main(int argc,char **argv)
 {
     char *module = NULL;
-    char *examstr;
+    char *examstr = NULL;
     if(argc >= 3)
     {
         module = argv[1];
@@ -57,7 +65,7 @@ int main(int argc,char **argv)
             {
                 examstr = argv[3];
             }
-            bp_calc_module(module);
+            bp_calc_module(module,examstr);
         }
         system("pause");
         return 0;
@@ -66,6 +74,6 @@ int main(int argc,char **argv)
 
     module = "test";
     bp_learn_module(module);
-    bp_calc_module(module);
+    bp_calc_module(module,NULL);
 	system("pause");
 }
