@@ -14,12 +14,13 @@ int bp_learn_module(char *module)
     bp = (bp_param_s*)malloc(sizeof(bp_param_s));
     bp_example_read(module);
     bp_example_print();
+    info = bp_example_info();
     
     bp_create(bp,4,node_cnt);
     bp_set_err_limit(bp,0.000002f);
     bp_set_learn_factor(bp,0.002f);
     bp_param_print(bp);
-    info = bp_example_info();
+    
     bp_learn(bp,info->exam,info->exa_cnt);
     bp_param_print(bp);
     bp_param_write(bp,module);
@@ -28,22 +29,23 @@ int bp_learn_module(char *module)
 int bp_calc_module(char *module)
 {
     bp_param_s *bp;
-    exaple_info_s *info;
     bp_example_s *exam;
-    bp = bp_get_param();
+    exaple_info_s *info;
     bp = (bp_param_s *)malloc(sizeof(bp_param_s));
     bp_param_read(bp,module);
     info = bp_example_info();
-    exam = new_example(info);
+    info->in_cnt = bp->input_cnt;
+    info->out_cnt = bp->output_cnt;
+    exam = new_example(bp->input_cnt,bp->output_cnt);
     init_example(exam,"[8,6]->[0,1]");
     bp_calc_example(bp,exam);
-    exam = new_example(info);
+    exam = new_example(bp->input_cnt,bp->output_cnt);
     init_example(exam,"[7.4,6.7]->[0,0]");
     bp_calc_example(bp,exam);
-    exam = new_example(info);
+    exam = new_example(bp->input_cnt,bp->output_cnt);
     init_example(exam,"[2.1,4.7]->[0,0]");
     bp_calc_example(bp,exam);
-    exam = new_example(info);
+    exam = new_example(bp->input_cnt,bp->output_cnt);
     init_example(exam,"[1.3,4]->[1,0]");
     bp_calc_example(bp,exam);
 }
@@ -54,13 +56,21 @@ int main(int argc,char **argv)
     if(argc >= 3)
     {
         module = argv[1];
-        if(strcmp(module,"learn") == 0)
+        if(strcmp(argv[2],"learn") == 0)
             bp_learn_module(module);
-        else if(strcmp(module,"calc") == 0)
+        if(strcmp(argv[2],"calc") == 0)
+        {
+            if(argc == 4)
+            {
+                
+            }
             bp_calc_module(module);
+        }
         system("pause");
         return 0;
     }
+    
+
     module = "test";
     bp_learn_module(module);
     bp_calc_module(module);

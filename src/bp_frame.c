@@ -9,7 +9,6 @@ typedef float (*FUNC_EXT)(float t);
 float ext_func1(float t){return 1/(1+exp(-t));}
 float ext_func2(float t){return (exp(t)-exp(-t))/(exp(t)+exp(-t));}
 float ext_func3(float t){return atan(t);}
-bp_param_s *g_bp;
 FUNC_EXT func_ext[3] = {ext_func1,ext_func2,ext_func3};
 
 static void print_float_arr(char *title,float *data,int cnt)
@@ -19,10 +18,6 @@ static void print_float_arr(char *title,float *data,int cnt)
     for(i = 0;i < cnt;i ++)
         bp_printf("%f ",data[i]);
     bp_printf("\r\n");
-}
-bp_param_s *bp_get_param(void)
-{
-    return g_bp;
 }
 
 //为节点数据和节点权重矩阵分配空间,初始化权重矩阵
@@ -55,7 +50,6 @@ int bp_create(bp_param_s *bp,int lay_cnt,int *node_cnt)
         get_rand(bp->lay_wight[i],cnt);
     }
     bp->lay_cnt = lay_cnt;
-    g_bp = bp;
     return 0;
 }
 
@@ -74,6 +68,10 @@ void bp_calc_node_count(int in_cnt,int out_cnt,int lay_cnt,int* node_cnt)
 {
     node_cnt[0] = in_cnt;
     node_cnt[lay_cnt-1] = out_cnt;
+    
+}
+void bp_calc_layer_and_node(bp_param_s *bp,int in_cnt,int out_cnt)
+{
     
 }
 
@@ -168,7 +166,11 @@ void bp_calc_example(bp_param_s *bp,bp_example_s *example)
                                 bp->node_cnt[i+1],0);
             
     }
-    print_float_arr("result",bp->lay_value[bp->lay_cnt-1],bp->node_cnt[bp->lay_cnt-1]);
+    for(i = 0;i < bp->output_cnt;i ++)
+        example->out_data[i] = bp->lay_value[bp->lay_cnt-1][i];
+    bp_printf("calc result:");
+    bp_example_print_one(example);
+    //print_float_arr("result",bp->lay_value[bp->lay_cnt-1],bp->node_cnt[bp->lay_cnt-1]);
 }
 //一个实例的完整学习流程
 int bp_translate_learn_example(bp_param_s *bp,bp_example_s *example)

@@ -36,8 +36,6 @@ typedef struct
     int out_cnt;
     int exa_cnt;
     bp_example_s *exam;
-    char **instr;
-    char **outstr;
 }exaple_info_s;
 
 #endif

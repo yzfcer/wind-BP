@@ -2,7 +2,7 @@
 #define BP_EXAPLE_H__
 #include "bp.h"
 
-bp_example_s *new_example(exaple_info_s *info);
+bp_example_s *new_example(int input_cnt,int output_cnt);
 int  init_example(bp_example_s *exam,char * examstr);
 void bp_example_init(void);
 void bp_example_reset(void);

@@ -11,8 +11,6 @@ void bp_example_init(void)
     info->in_cnt = 0;
     info->out_cnt = 0;
     info->exa_cnt = 0;
-    info->instr = NULL;
-    info->outstr = NULL;
 }
 
 void bp_example_reset(void)
@@ -83,8 +81,6 @@ static int set_exaple_info(char * examstr)
         return -1;
     info->exa_cnt = 0;
     info->exam = NULL;
-    info->instr = (char **)malloc(sizeof(char*)*info->in_cnt);
-    info->outstr = (char **)malloc(sizeof(char*)*info->out_cnt);
     return 0;
 }
 
@@ -99,12 +95,12 @@ static int check_example(char * examstr)
     return 0;
 }
 
-bp_example_s *new_example(exaple_info_s *info)
+bp_example_s *new_example(int input_cnt,int output_cnt)
 {
     bp_example_s *exam = (bp_example_s *)malloc(sizeof(bp_example_s));
-    exam->in_data = (float*)malloc(sizeof(float)*info->in_cnt);
-    exam->out_data = (float*)malloc(sizeof(float)*info->out_cnt);
-    exam->errlist = (float*)malloc(sizeof(float)*info->out_cnt);
+    exam->in_data = (float*)malloc(sizeof(float)*input_cnt);
+    exam->out_data = (float*)malloc(sizeof(float)*output_cnt);
+    exam->errlist = (float*)malloc(sizeof(float)*output_cnt);
     exam->error = 0;
     return exam;
 }
@@ -176,7 +172,7 @@ int bp_example_create(char * examstr)
         bp_printf("[ERROR] invalid example: %s\r\n",examstr);
         return -1;
     }
-    exam = new_example(info);
+    exam = new_example(info->in_cnt,info->out_cnt);
     ret = init_example(exam,examstr);
     if(ret < 0)
     {
@@ -220,13 +216,13 @@ void bp_example_print_one(bp_example_s *exam)
     idx += sprintf(&examstr[idx],"[");
     for(i = 0;i < info->in_cnt;i ++)
     {
-        idx += sprintf(&examstr[idx],"%.0f,",exam->in_data[i]);
+        idx += sprintf(&examstr[idx],"%g,",exam->in_data[i]);
     }
     idx --;
     idx += sprintf(&examstr[idx],"]->[");
     for(i = 0;i < info->out_cnt;i ++)
     {
-        idx += sprintf(&examstr[idx],"%.0f,",exam->out_data[i]);
+        idx += sprintf(&examstr[idx],"%g,",exam->out_data[i]);
     }
     idx --;
     idx += sprintf(&examstr[idx],"]\r\n");
