@@ -39,20 +39,13 @@ int bp_calc_module(char *module)
     exam = new_example(bp->input_cnt,bp->output_cnt);
     init_example(exam,"[8,6]->[0,1]");
     bp_calc_example(bp,exam);
-    exam = new_example(bp->input_cnt,bp->output_cnt);
-    init_example(exam,"[7.4,6.7]->[0,0]");
-    bp_calc_example(bp,exam);
-    exam = new_example(bp->input_cnt,bp->output_cnt);
-    init_example(exam,"[2.1,4.7]->[0,0]");
-    bp_calc_example(bp,exam);
-    exam = new_example(bp->input_cnt,bp->output_cnt);
-    init_example(exam,"[1.3,4]->[1,0]");
-    bp_calc_example(bp,exam);
+
 }
 
 int main(int argc,char **argv)
 {
     char *module = NULL;
+    char *examstr;
     if(argc >= 3)
     {
         module = argv[1];
@@ -62,7 +55,7 @@ int main(int argc,char **argv)
         {
             if(argc == 4)
             {
-                
+                examstr = argv[3];
             }
             bp_calc_module(module);
         }

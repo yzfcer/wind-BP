@@ -128,10 +128,13 @@ int init_example(bp_example_s *exam,char * examstr)
     int i = 0;
     int idx1 = get_char_index(examstr,0,'[')+1;
     int idx2 = get_char_index(examstr,0,']')-1;
+    if((idx1 < 0) || (idx2 < idx1))
+        return -1;
     decode_data(examstr,exam->in_data,idx1,idx2);
     idx1 = get_char_index(examstr,idx2+2,'[') + 1;
     idx2 = get_char_index(examstr,idx2+2,']') - 1;
-    decode_data(examstr,exam->out_data,idx1,idx2);
+    if((idx1 > 0) && (idx2 > 0))
+        decode_data(examstr,exam->out_data,idx1,idx2);
     return 0;
 }
 
