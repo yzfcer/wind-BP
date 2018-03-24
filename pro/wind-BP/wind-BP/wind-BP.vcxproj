@@ -42,6 +42,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)../../../src;$(ProjectDir)../../../port;$(IncludePath)</IncludePath>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -58,7 +59,8 @@
       <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -73,6 +75,7 @@
     <ClCompile Include="..\..\..\src\bp_file.c" />
     <ClCompile Include="..\..\..\src\bp_frame.c" />
     <ClCompile Include="..\..\..\src\bp_func.c" />
+    <ClCompile Include="..\..\..\src\cJSON.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\port\bp_port.h" />
@@ -80,6 +83,7 @@
     <ClInclude Include="..\..\..\src\bp_file.h" />
     <ClInclude Include="..\..\..\src\bp_frame.h" />
     <ClInclude Include="..\..\..\src\bp_func.h" />
+    <ClInclude Include="..\..\..\src\cJSON.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

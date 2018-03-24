@@ -48,6 +48,8 @@ int bp_calc_module(char *module)
     exaple_info_s *info;
     bp_example_s *exam;
     bp = bp_get_param();
+    bp = (bp_param_s *)malloc(sizeof(bp_param_s));
+    bp_param_read(bp,module);
     info = bp_example_info();
     exam = new_example(info);
     init_example(exam,"[8,6]->[0,1]");
