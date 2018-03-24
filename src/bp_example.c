@@ -20,7 +20,6 @@ void bp_example_reset(void)
     exaple_info_s *info = bp_example_info();
     bp_example_destroy(info->exam);
     bp_example_init();
-    
 }
 
 static int get_char_index(char * str,int idx,char c)

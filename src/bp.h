@@ -8,14 +8,14 @@ typedef struct __bp_param_s bp_param_s;
 struct __bp_param_s
 {
     int lay_cnt;//层数
-    int *node_cnt;//每层的节点数
+    float learn_factor;//学习因子
     float err_limit;//误差阈值
-    float learn_factor;//学习影子
+    float tot_err;//所有学习实例总误差
+    float avr_err;//所有学习实例平均误差
+    int *node_cnt;//每层的节点数
     float **lay_value;
     float **lay_wight;//
     float **errlist;//输出误差向量
-    float tot_err;//所有学习实例总误差
-    float avr_err;//所有学习实例平均误差
 };
 
 //学习实例

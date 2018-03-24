@@ -9,6 +9,7 @@ typedef float (*FUNC_EXT)(float t);
 float ext_func1(float t){return 1/(1+exp(-t));}
 float ext_func2(float t){return (exp(t)-exp(-t))/(exp(t)+exp(-t));}
 float ext_func3(float t){return atan(t);}
+bp_param_s *g_bp;
 FUNC_EXT func_ext[3] = {ext_func1,ext_func2,ext_func3};
 
 static void print_float_arr(char *title,float *data,int cnt)
@@ -18,6 +19,10 @@ static void print_float_arr(char *title,float *data,int cnt)
     for(i = 0;i < cnt;i ++)
         bp_printf("%f ",data[i]);
     bp_printf("\r\n");
+}
+bp_param_s *bp_get_param(void)
+{
+    return g_bp;
 }
 
 //为节点数据和节点权重矩阵分配空间,初始化权重矩阵
@@ -48,7 +53,7 @@ int bp_create(bp_param_s *bp,int lay_cnt,int *node_cnt)
         get_rand(bp->lay_wight[i],cnt);
     }
     bp->lay_cnt = lay_cnt;
-    
+    g_bp = bp;
     return 0;
 }
 
@@ -275,25 +280,81 @@ static void print_wight(float *wight,int lay_cnt1,int lay_cnt2)
     bp_printf("\r\n");
 }
 
+static int float_arr_tostring(char *buff,float *array,int lay_cnt1,int lay_cnt2)
+{
+    int i,j,k = 0;
+    int idx = 0;
+    for(i = 0;i < lay_cnt1;i ++)
+    {
+        for(j = 0;j < lay_cnt2;j ++)
+            idx += sprintf(&buff[idx],"%f ",array[k++]);
+        idx --;
+        idx += sprintf(&buff[idx],"\r\n");
+    }
+    idx += sprintf(&buff[idx],"\r\n");
+}
+
+static int int_arr_tostring(char *buff,int *array,int lay_cnt1,int lay_cnt2)
+{
+    int i,j,k = 0;
+    int idx = 0;
+    for(i = 0;i < lay_cnt1;i ++)
+    {
+        for(j = 0;j < lay_cnt2;j ++)
+            idx += sprintf(&buff[idx],"%d ",array[k++]);
+        idx --;
+        idx += sprintf(&buff[idx],"\r\n");
+    }
+    idx += sprintf(&buff[idx],"\r\n");
+}
+
+
+int bp_param_tostring(bp_param_s *bp,char *buff)
+{
+    int idx = 0;
+    int i,j;
+    
+    idx += sprintf(&buff[idx],"lay_cnt=%d\r\n",bp->lay_cnt);
+    idx += sprintf(&buff[idx],"learn_factor=%f\r\n",bp->learn_factor);
+    idx += sprintf(&buff[idx],"err_limit=%f\r\n",bp->err_limit);
+    idx += sprintf(&buff[idx],"tot_err=%f\r\n",bp->tot_err);
+    idx += sprintf(&buff[idx],"avr_err=%f\r\n",bp->avr_err);
+    
+    idx += sprintf(&buff[idx],"node_cnt=");
+    idx += int_arr_tostring(&buff[idx],bp->node_cnt,1,bp->lay_cnt);
+    
+    for(i = 0;i < bp->lay_cnt-1;i ++)
+    {
+        idx += sprintf(&buff[idx],"lay_wight%d=\r\n",i+1);
+        idx += float_arr_tostring(&buff[idx],bp->lay_wight[i],bp->node_cnt[i],bp->node_cnt[i+1]);
+    }
+    return idx;
+}
+
 void bp_param_print(bp_param_s *bp)
 {
     int i;
+    char *buff;
     if(bp == NULL)
     {
         bp_printf("NULL bp_param pointer\r\n");
         return;
     }
-    bp_printf("lay_cnt:%d\r\n",bp->lay_cnt);
-    bp_printf("learn_factor:%f\r\n",bp->learn_factor);
-    bp_printf("err_limit:%f\r\n",bp->err_limit);
-    bp_printf("layer wight:\r\n");
+    buff = (char*)malloc(8192);
+    memset(buff,0,8192);
+    bp_param_tostring(bp,buff);
+    bp_printf("%s\r\n",buff);
+#if 0
+    bp_printf("lay_cnt=%d\r\n",bp->lay_cnt);
+    bp_printf("learn_factor=%f\r\n",bp->learn_factor);
+    bp_printf("err_limit=%f\r\n",bp->err_limit);
+    bp_printf("layer wight=\r\n");
     for(i = 0;i < bp->lay_cnt-1;i ++)
     {
-        
-        bp_printf("layer[%d] =\r\n",i+1);
+        bp_printf("layer[%d]=\r\n",i+1);
         print_wight(bp->lay_wight[i],bp->node_cnt[i],bp->node_cnt[i+1]);
     }
-    
+#endif    
 }
 
 

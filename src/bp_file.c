@@ -3,6 +3,7 @@
 #include "bp_file.h"
 #include <direct.h>
 #include "bp_port.h"
+#include "bp_frame.h"
 
 #define PARAM_FILE_SIZE 8192 
 static char *get_file_pathname(char *module,char *name)
@@ -99,15 +100,14 @@ int bp_param_read(bp_param_s *bp,char *module)
 
 int bp_param_write(bp_param_s *bp,char *module)
 {
-    char *line = (char*)malloc(256);
+    int idx = 0;
+    int i;
     char *buff = (char*)malloc(8192);
     char *pathname = get_file_pathname(module,"param.txt");
-    do
-    {
-        
-    }while(0);
+    memset(buff,0,8192);
+    idx = bp_param_tostring(bp,buff);
+    bp_write_file(pathname,buff,idx);
     free(pathname);
-    free(line);
     return 0;
 }
 
