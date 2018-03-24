@@ -30,6 +30,8 @@ int bp_create(bp_param_s *bp,int lay_cnt,int *node_cnt)
 {
     int i;
     int cnt;
+    bp->input_cnt = node_cnt[0];
+    bp->output_cnt = node_cnt[lay_cnt-1];
     bp->node_cnt = (int*)malloc(lay_cnt*sizeof(int));
     memset(bp->node_cnt,0,lay_cnt*sizeof(int));
     bp->lay_value = (float**)malloc(lay_cnt*sizeof(float *));

@@ -10,31 +10,14 @@ int bp_learn_module(char *module)
     bp_param_s *bp;
     exaple_info_s *info;
     bp_example_s *exam;
-    int node_cnt[4] = {2,4,4,2};
+    int node_cnt[4] = {2,5,3,2};
     bp = (bp_param_s*)malloc(sizeof(bp_param_s));
-    //if(argc > 1)
-    //    bp_param_read(bp,argv[1]);
-#if 1
-    bp_example_create("[7,7]->[0,1]");
-    bp_example_create("[5,8]->[0,1]");
-    bp_example_create("[5,6]->[0,1]");
-    bp_example_create("[7,9]->[0,1]");
-    bp_example_create("[9,5]->[0,1]");
-    bp_example_create("[8,6]->[0,1]");
-#endif
-#if 1
-    bp_example_create("[2,3]->[1,0]");
-    bp_example_create("[1.3,4]->[1,0]");
-    bp_example_create("[1.8,3.2]->[1,0]");
-    bp_example_create("[1,4.3]->[1,0]");
-    bp_example_create("[2,2]->[1,0]");
-    bp_example_create("[3,4]->[1,0]");
-#endif
+    bp_example_read(module);
     bp_example_print();
     
     bp_create(bp,4,node_cnt);
     bp_set_err_limit(bp,0.000002f);
-    bp_set_learn_factor(bp,0.001f);
+    bp_set_learn_factor(bp,0.002f);
     bp_param_print(bp);
     info = bp_example_info();
     bp_learn(bp,info->exam,info->exa_cnt);

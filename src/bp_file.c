@@ -33,7 +33,7 @@ static int get_file_pathname(char *pathname,char *module,char *filename)
     return 0;
 }
 
-
+#if 0
 static int get_line(char *buff,int idx,int end)
 {
     int i;
@@ -69,7 +69,7 @@ static int decode_param(char *buff,int filelen)
     return 0;
     
 }
-
+#endif
 
 static cJSON *bp_format_JSON_str(bp_param_s *bp)
 {
@@ -79,6 +79,9 @@ static cJSON *bp_format_JSON_str(bp_param_s *bp)
     char wight[12];
     cJSON *root = cJSON_CreateObject();
     cJSON_AddNumberToObject(root,"lay_cnt",bp->lay_cnt);
+    cJSON_AddNumberToObject(root,"input_cnt",bp->input_cnt);
+    cJSON_AddNumberToObject(root,"output_cnt",bp->output_cnt);
+    
     cJSON_AddNumberToObject(root,"learn_factor",bp->learn_factor);
     cJSON_AddNumberToObject(root,"err_limit",bp->err_limit);
     cJSON_AddNumberToObject(root,"tot_err",bp->tot_err);
@@ -104,6 +107,10 @@ static int bp_from_JSON_str(bp_param_s *bp,char *JSONstr)
     cJSON *root = cJSON_Parse(JSONstr);
     obj = cJSON_GetObjectItem(root,"lay_cnt");
     bp->lay_cnt = obj->valueint;
+    obj = cJSON_GetObjectItem(root,"input_cnt");
+    bp->input_cnt = obj->valueint;
+    obj = cJSON_GetObjectItem(root,"output_cnt");
+    bp->output_cnt = obj->valueint;
     obj = cJSON_GetObjectItem(root,"learn_factor");
     bp->learn_factor = (float)obj->valuedouble;
     obj = cJSON_GetObjectItem(root,"err_limit");
@@ -189,15 +196,49 @@ int bp_param_write(bp_param_s *bp,char *module)
     return 0;
 }
 
-int bp_example_read(bp_example_s *exam,char *module)
+static char *get_line(char *buff)
+{
+    int i;
+    if(buff[0] == 0)
+        return NULL;
+    for(i = 0;;i ++)
+    {
+        if(buff[i] == 0)
+            return buff;
+        else if((buff[i] == '\r')||(buff[i] == '\n'))
+        {
+            buff[i] = 0;
+            return buff;
+        }
+    }
+}
+
+static int example_from_str(char *buff)
+{
+    int len;
+    char *line = buff;
+    while(1)
+    {
+        line = get_line(line);
+        if(line == NULL)
+            return 0;
+        len = strlen(line);
+        if(len > 0)
+            bp_example_create(line);
+        line = &line[len+1];
+    }
+}
+
+int bp_example_read(char *module)
 {
     int idx = 0;
     int ret;
     char *pathname = (char*)malloc(256);
     char *buff = (char*)malloc(8192);
-    ret = get_file_pathname(pathname,module,"param.txt");
+    ret = get_file_pathname(pathname,module,"example.txt");
     memset(buff,0,8192);
     bp_read_file(pathname,buff,8192);
+    example_from_str(buff);
     free(pathname);
     free(buff);
     return 0;
@@ -209,7 +250,7 @@ int bp_example_write(bp_example_s *exam,char *module)
     int ret;
     char *pathname = (char*)malloc(256);
     char *buff = (char*)malloc(8192);
-    ret = get_file_pathname(pathname,module,"param.txt");
+    ret = get_file_pathname(pathname,module,"example.txt");
     memset(buff,0,8192);
     bp_read_file(pathname,buff,8192);
     bp_write_file(pathname,buff,idx);
